@@ -1,23 +1,31 @@
 'use client'
 
 import { LiveUpdates } from '@/components/home/LiveUpdates'
-import { LocationCard } from '@/components/home/LocationCard'
+import { LocationCard } from '@/components/home/AppleLocationCard'
 import { NearbyTransport } from '@/components/home/NearbyTransport'
 import { NewsUpdates } from '@/components/home/NewsUpdates'
-import { QuickActions } from '@/components/home/QuickActions'
-import { WeatherWidget } from '@/components/home/WeatherWidget'
+import { WeatherWidget } from '@/components/home/AppleWeatherWidget'
+import AdvancedPersonalizedRecommendations from '@/components/home/AdvancedPersonalizedRecommendations'
+import SmartInsights from '@/components/home/SmartInsights'
+import EnhancedQuickActions from '@/components/home/EnhancedQuickActions'
+import RecommendationSettings from '@/components/home/RecommendationSettings'
+import { CompactInfoGrid } from '@/components/home/CompactInfoGrid'
+import { TabbedContent } from '@/components/home/TabbedContent'
+import { SmartAlertSystem } from '@/components/home/SmartAlertSystem'
+import { EnhancedSystemMetrics } from '@/components/home/EnhancedSystemMetrics'
+import { EnhancedLiveTracking } from '@/components/tracking/EnhancedLiveTracking'
+import { EnhancedJourneyPlanner } from '@/components/journey/EnhancedJourneyPlanner'
 import BudgetTracker from '@/components/budget/BudgetTracker'
 import CrowdsourcingHub from '@/components/crowdsourcing/CrowdsourcingHub'
 import OfflineIndicator from '@/components/ui/OfflineIndicator'
+import { EnhancedHeader } from '@/components/navigation/EnhancedHeader'
+import { EnhancedFooter } from '@/components/navigation/EnhancedFooter'
 import {
     BellIcon,
-    ChartBarIcon,
     ExclamationTriangleIcon,
-    MapPinIcon,
-    TruckIcon,
-    CurrencyDollarIcon,
-    UserGroupIcon,
-    MagnifyingGlassIcon
+    Cog6ToothIcon,
+    UserCircleIcon,
+    SparklesIcon
 } from '@heroicons/react/24/outline'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
@@ -27,6 +35,8 @@ export default function HomePage() {
   const [currentTime, setCurrentTime] = useState(new Date())
   const [userLocation, setUserLocation] = useState<{latitude: number, longitude: number} | null>(null)
   const [locationName, setLocationName] = useState('Getting location...')
+  const [userId] = useState('user_123') // In real app, get from auth context
+  const [showSettings, setShowSettings] = useState(false)
 
   // Update time every minute
   useEffect(() => {
@@ -95,90 +105,23 @@ export default function HomePage() {
     })
   }
 
-  const quickActionItems = [
-    {
-      title: 'Plan Journey',
-      description: 'Smart route planning',
-      icon: MagnifyingGlassIcon,
-      href: '/journey',
-      color: 'bg-blue-500',
-    },
-    {
-      title: 'Track Vehicle',
-      description: 'Real-time tracking',
-      icon: TruckIcon,
-      href: '/track',
-      color: 'bg-transport-bus',
-    },
-    {
-      title: 'Budget Tracker',
-      description: 'Manage transport costs',
-      icon: CurrencyDollarIcon,
-      href: '/journey?tab=budget',
-      color: 'bg-green-500',
-    },
-    {
-      title: 'Community',
-      description: 'Live crowd reports',
-      icon: UserGroupIcon,
-      href: '/journey?tab=community',
-      color: 'bg-purple-500',
-    },
-    {
-      title: 'Report Issue',
-      description: 'Help improve service',
-      icon: ExclamationTriangleIcon,
-      href: '/community',
-      color: 'bg-red-500',
-    },
-    {
-      title: 'View Analytics',
-      description: 'Transport insights',
-      icon: ChartBarIcon,
-      href: '/analytics',
-      color: 'bg-orange-500',
-    },
-  ]
+  const getGreeting = () => {
+    const hour = currentTime.getHours()
+    if (hour < 12) return 'Good Morning'
+    if (hour < 17) return 'Good Afternoon'
+    return 'Good Evening'
+  }
 
   return (
-    <div className="min-h-screen-safe bg-gradient-to-br from-aura-primary/5 to-aura-secondary/5">
+    <div className="min-h-screen-safe bg-gradient-to-br from-aura-primary/3 via-white to-aura-secondary/3">
       {/* Offline Status Indicator */}
       <OfflineIndicator />
 
-      {/* Header */}
-      <motion.header
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="bg-white shadow-mobile border-b border-ui-border safe-area-top"
-      >
-        <div className="px-mobile py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex-1 min-w-0">
-              <h1 className="text-responsive-xl font-bold font-display text-aura-primary truncate">
-                AURA Commuter
-              </h1>
-              <p className="text-responsive-sm text-ui-text-secondary truncate">
-                {formatDate(currentTime)}
-              </p>
-            </div>
-
-            <div className="flex items-center space-x-2 ml-4">
-              <div className="text-right hidden xs:block">
-                <div className="text-responsive-base font-semibold text-ui-text-primary">
-                  {formatTime(currentTime)}
-                </div>
-                <div className="text-xs-mobile text-ui-text-secondary">
-                  Local Time
-                </div>
-              </div>
-
-              <button className="tap-target p-2 rounded-full bg-aura-primary/10 text-aura-primary active:scale-95 transition-transform">
-                <BellIcon className="w-5 h-5" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </motion.header>
+      {/* Enhanced Header */}
+      <EnhancedHeader 
+        onSettingsClick={() => setShowSettings(true)}
+        onNotificationsClick={() => {/* Handle notifications */}}
+      />
 
       {/* Main Content */}
       <main className="px-mobile py-6 space-mobile max-w-md mx-auto">
@@ -195,163 +138,117 @@ export default function HomePage() {
           />
         </motion.div>
 
-        {/* Weather Widget */}
+        {/* Advanced Personalized Recommendations - High Priority */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <WeatherWidget />
+          <AdvancedPersonalizedRecommendations
+            userId={userId}
+            userLocation={userLocation || undefined}
+            className="mb-6"
+            maxRecommendations={5}
+            enableRealtime={true}
+            enableAnalytics={true}
+            enableOptimization={true}
+          />
         </motion.div>
 
-        {/* Quick Actions */}
+        {/* Enhanced Quick Actions */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
         >
-          <div className="mb-4">
-            <h2 className="text-lg font-semibold text-ui-text-primary mb-2">
-              Quick Actions
-            </h2>
-          </div>
-          <QuickActions items={quickActionItems} />
+          <EnhancedQuickActions className="mb-6" />
         </motion.div>
 
-        {/* Nearby Transport */}
+        {/* Smart Insights & Weather - Side by Side */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ui-text-primary">
-              Nearby Transport
-            </h2>
-            <Link
-              href="/track"
-              className="text-sm text-aura-primary font-medium"
-            >
-              View All
-            </Link>
+          <div className="lg:col-span-2">
+            <SmartInsights
+              userId={userId}
+              userLocation={userLocation || undefined}
+            />
           </div>
-          <NearbyTransport />
+          <div className="lg:col-span-1">
+            <WeatherWidget className="h-full" />
+          </div>
         </motion.div>
 
-        {/* Budget Overview */}
+        {/* Compact Info Grid */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
+          className="mb-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ui-text-primary">
-              Budget Overview
-            </h2>
-            <Link
-              href="/journey?tab=budget"
-              className="text-sm text-aura-primary font-medium"
-            >
-              Manage
-            </Link>
-          </div>
-          <BudgetTracker />
+          <CompactInfoGrid />
         </motion.div>
 
-        {/* Community Reports */}
+        {/* Tabbed Content - Transport, News, Live Updates, Community */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6 }}
+          className="mb-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ui-text-primary">
-              Community Reports
-            </h2>
-            <div className="flex items-center space-x-1">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-xs text-ui-text-secondary">Live</span>
-            </div>
-          </div>
-          <CrowdsourcingHub userLocation={userLocation || undefined} />
+          <TabbedContent />
         </motion.div>
 
-        {/* Live Updates */}
+        {/* Enhanced Journey Planner */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7 }}
+          className="mb-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ui-text-primary">
-              System Updates
-            </h2>
-            <div className="flex items-center space-x-1">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              <span className="text-xs text-ui-text-secondary">Live</span>
-            </div>
-          </div>
-          <LiveUpdates />
+          <EnhancedJourneyPlanner />
         </motion.div>
 
-        {/* News & Announcements */}
+        {/* Enhanced System Metrics */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.8 }}
+          className="mb-6"
         >
-          <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-lg font-semibold text-ui-text-primary">
-              Transport News
-            </h2>
-            <Link
-              href="/news"
-              className="text-sm text-aura-primary font-medium"
-            >
-              View All
-            </Link>
-          </div>
-          <NewsUpdates />
+          <EnhancedSystemMetrics />
         </motion.div>
 
-        {/* Emergency Contact */}
+        {/* Enhanced Live Tracking */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.9 }}
-          className="bg-red-50 border border-red-200 rounded-2xl p-4"
+          className="mb-6"
         >
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
-              <ExclamationTriangleIcon className="w-5 h-5 text-white" />
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold text-red-800">Emergency Contact</h3>
-              <p className="text-sm text-red-600">
-                For transport emergencies, call 191 or 112
-              </p>
-            </div>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-lg font-medium tap-target">
-              Call
-            </button>
-          </div>
+          <EnhancedLiveTracking userLocation={userLocation || undefined} />
         </motion.div>
 
-        {/* App Info */}
+        {/* Smart Alert System - Apple Style */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.0 }}
-          className="text-center py-4"
+          className="mb-6"
         >
-          <p className="text-xs text-ui-text-muted">
-            AURA Commuter v1.0.0 • Made for Ghana 🇬🇭
-          </p>
-          <p className="text-xs text-ui-text-muted mt-1">
-            Featuring smart budgeting, crowdsourced updates & GTFS integration
-          </p>
+          <SmartAlertSystem />
         </motion.div>
       </main>
+
+      {/* Recommendation Settings Modal */}
+      <RecommendationSettings
+        userId={userId}
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
     </div>
   )
 }

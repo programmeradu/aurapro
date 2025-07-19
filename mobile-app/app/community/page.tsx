@@ -5,6 +5,7 @@ import { CommunityStats } from '@/components/community/CommunityStats'
 import { ReportForm } from '@/components/community/ReportForm'
 import { UserProfile } from '@/components/community/UserProfile'
 import { communityService } from '@/services/communityService'
+import { apiService } from '@/services/apiService'
 import { CommunityStats as CommunityStatsType } from '@/types/community'
 import { GeoPoint } from '@/types/transport'
 import {

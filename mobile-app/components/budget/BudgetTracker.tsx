@@ -11,6 +11,7 @@ import {
   CalendarIcon
 } from '@heroicons/react/24/outline'
 import { budgetService, TransportBudget, BudgetInsight } from '@/services/budgetService'
+import { apiService } from '@/services/apiService'
 
 interface BudgetTrackerProps {
   className?: string
