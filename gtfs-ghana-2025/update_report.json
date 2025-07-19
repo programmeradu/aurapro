@@ -1,0 +1,11 @@
+{
+  "update_date": "2025-07-17T11:40:13.048015",
+  "gtfs_version": "Ghana Transport Network 2025",
+  "data_summary": {
+    "agency.txt": 7,
+    "routes.txt": 25,
+    "stops.txt": 50,
+    "trips.txt": 1000,
+    "stop_times.txt": 2080
+  }
+}

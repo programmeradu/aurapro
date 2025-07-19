@@ -1,0 +1,21 @@
+{
+  "pages": {
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/css/vendors.css",
+      "static/chunks/vendors.js",
+      "static/chunks/main-app.js",
+      "static/chunks/common.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/page": [
+      "static/chunks/webpack.js",
+      "static/css/vendors.css",
+      "static/chunks/vendors.js",
+      "static/chunks/main-app.js",
+      "static/chunks/common.js",
+      "static/chunks/app/page.js"
+    ]
+  }
+}

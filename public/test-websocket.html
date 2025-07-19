@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Test</title>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+</head>
+<body>
+    <h1>AURA WebSocket Connection Test</h1>
+    <div id="status">Disconnected</div>
+    <div id="data"></div>
+    <button onclick="connect()">Connect</button>
+    <button onclick="disconnect()">Disconnect</button>
+
+    <h2>Debug Log:</h2>
+    <div id="log" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; font-family: monospace; font-size: 12px;"></div>
+    
+    <script>
+        let socket = null;
+
+        function log(message) {
+            console.log(message);
+            const logDiv = document.getElementById('log');
+            logDiv.innerHTML += '<div>' + new Date().toLocaleTimeString() + ': ' + message + '</div>';
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function connect() {
+            log('🔌 Attempting to connect to WebSocket...');
+
+            // Check if io is available
+            if (typeof io === 'undefined') {
+                log('❌ Socket.IO client library not loaded!');
+                return;
+            }
+
+            log('✅ Socket.IO client library loaded');
+
+            try {
+                socket = io('http://localhost:8002', {
+                    transports: ['websocket', 'polling'],
+                    timeout: 10000,
+                    forceNew: true
+                });
+
+                log('🚀 Socket.IO instance created');
+
+                socket.on('connect', () => {
+                    log('✅ Connected to WebSocket');
+                    document.getElementById('status').textContent = 'Connected';
+                    document.getElementById('status').style.color = 'green';
+                });
+
+                socket.on('disconnect', () => {
+                    log('❌ Disconnected from WebSocket');
+                    document.getElementById('status').textContent = 'Disconnected';
+                    document.getElementById('status').style.color = 'red';
+                });
+
+                socket.on('connect_error', (error) => {
+                    log('❌ Connection error: ' + error.message);
+                    document.getElementById('status').textContent = 'Connection Error: ' + error.message;
+                    document.getElementById('status').style.color = 'red';
+                });
+
+                socket.on('vehicle_update', (data) => {
+                    log('🚗 Vehicle update received');
+                    document.getElementById('data').innerHTML = '<strong>Vehicle Update:</strong> ' + JSON.stringify(data, null, 2);
+                });
+
+                socket.on('kpi_update', (data) => {
+                    log('📊 KPI update received');
+                    document.getElementById('data').innerHTML = '<strong>KPI Update:</strong> ' + JSON.stringify(data, null, 2);
+                });
+
+            } catch (error) {
+                log('❌ Error creating socket: ' + error.message);
+            }
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+                log('🔌 Disconnected');
+            }
+        }
+
+        // Auto-connect on page load
+        window.addEventListener('load', () => {
+            log('📄 Page loaded');
+            connect();
+        });
+    </script>
+</body>
+</html>

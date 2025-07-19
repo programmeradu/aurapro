@@ -1,0 +1,4 @@
+{
+    "zencoder.enableRepoIndexing": true,
+    "git.ignoreLimitWarning": true
+}

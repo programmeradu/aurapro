@@ -1,0 +1,286 @@
+All docschevron-rightAPI Docschevron-rightNavigationchevron-rightOptimization API v1
+Optimization API v1
+On this page
+Retrieve an optimization
+Fixing start and end points
+Example request: Retrieve an optimization
+Response: Retrieve an optimization
+Example response object
+Supported libraries: Retrieve an optimization
+Optimization v1 API errors
+Optimization v1 API restrictions and limits
+Optimization v1 API pricing
+Public Beta for the Optimization v2 API
+Mapbox is launching a Beta program for the Optimization v2 API with many new features,including time window constraints, vehicle capacity limits, driver shifts, and pickup and drop off constraints.If you are interested in early access to the Optimization v2 API Beta, sign up here. Refer to the Optimization v2 API documentation for more details.
+
+The Mapbox Optimization API returns a duration-optimized route between the input coordinates. This is also known as solving the Traveling Salesperson Problem. A typical use case for the Optimization API is planning the route for deliveries in a city. You can retrieve a route for car driving, bicycling, and walking.
+
+TUTORIAL
+Generate an optimized route with the Optimization API
+Use the Mapbox Optimization API to generate a duration-optimized route between several points.
+
+Retrieve an optimization
+get
+https://api.mapbox.com/optimized-trips/v1/{profile}/{coordinates}
+A call to this endpoint retrieves a duration-optimized route between input coordinates.
+
+Required parameters	Type	Description
+profile	string	A Mapbox Directions routing profile ID.
+Profile ID	Description
+mapbox/driving	Car travel times, distances, or both
+mapbox/walking	Pedestrian and hiking travel times, distances, or both
+mapbox/cycling	Bicycle travel times, distances, or both
+mapbox/driving-traffic	Car travel times, distances, or both as informed by traffic data
+coordinates	number	A semicolon-separated list of {longitude},{latitude} coordinates. There must be between two and 12 coordinates. The first coordinate is the start and end point of the trip by default.
+You can further refine the results from this endpoint with the following optional parameters:
+
+Optional parameters	Type	Description
+annotations	string	Return additional metadata along the route. You can include several annotations as a comma-separated list. Must be used in combination with overview=full.
+Possible values	Description
+duration	The duration between each pair of coordinates, in seconds
+distance	The distance between each pair of coordinates, in meters
+speed	The speed between each pair of coordinates, in meters per second
+approaches	string	A semicolon-separated list indicating the side of the road from which to approach waypoints in a requested route. Accepts unrestricted (default, route can arrive at the waypoint from either side of the road) or curb (route will arrive at the waypoint on the driving_side of the region). If provided, the number of approaches must be the same as the number of waypoints. But, you can skip a coordinate and show its position in the list with the ; separator. Must be used in combination with steps=true.
+bearings	integer	Influences the direction in which a route starts from a waypoint. Used to filter the road segment on which a waypoint will be placed by direction. This is useful for making sure the new routes of rerouted vehicles continue traveling in their current direction. A request that does this would provide bearing and radius values for the first waypoint and leave the remaining values empty. Must be used in combination with the radiuses parameter. Takes 2 values per waypoint: an angle clockwise from true north between 0 and 360, and the range of degrees by which the angle can deviate (recommended value is 45° or 90°), formatted as {angle, degrees}. If provided, the list of bearings must be the same length as the list of waypoints. But, you can skip a coordinate and show its position in the list with the ; separator.
+destination	string	Specify the destination coordinate of the returned route. Accepts any (default) or last.
+distributions	integer	Specify pick-up and drop-off locations for a trip by providing a ; delimited list of number pairs that correspond with the coordinates list. The first number of a pair indicates the index to the coordinate of the pick-up location in the coordinates list, and the second number indicates the index to the coordinate of the drop-off location in the coordinates list. Each pair must contain exactly 2 numbers, which cannot be the same. The returned solution will visit pick-up locations before visiting drop-off locations. The first location can only be a pick-up location, not a drop-off location.
+geometries	string	The format of the returned geometry. Allowed values are: geojson (as LineString), polyline (default, a polyline with precision 5), polyline6 (a polyline with precision 6).
+language	string	The language of returned turn-by-turn text instructions. See supported languages. The default is en (English).
+overview	string	The type of the returned overview geometry. Can be full (the most detailed geometry available), simplified (default, a simplified version of the full geometry), or false (no overview geometry).
+radiuses	number or string	The maximum distance a coordinate can be moved to snap to the road network, in meters. There must be as many radiuses as there are coordinates in the request, each separated by ;. Values can be any number greater than 0 or the string unlimited. A NoSegment error is returned if no routable road is located within the radius.
+source	string	The coordinate at which to start the returned route. Accepts any (default) or first.
+steps	boolean	Whether to return steps and turn-by-turn instructions (true) or not (false, default).
+roundtrip	boolean	Indicates whether the returned route is round trip, meaning the first coordinate is both the start and end point of the route (true, default) or not (false). If roundtrip=false, the source and destination parameters are required but not all combinations will be possible. See the Fixing start and end points section below for additional notes.
+Unrecognized options in the query string result in an InvalidInput error.
+
+Note that routes returned by the Optimization API will behave as if each waypoint setscontinue_straight=false, meaning that the route will continue in the same direction of travel. See the continue_straight parameter in the Directions API for more details on what this means for the route.
+
+Fixing start and end points
+You can explicitly set the start or end coordinate of the trip:
+
+When source=first, the first coordinate is used as the start coordinate of the trip in the output.
+When destination=last, the last coordinate is used as the destination coordinate of the trip in the output.
+If you specify any for source or destination, any of the coordinates can be used as the first or last coordinate in the output.
+If source=any&destination=any, the returned round trip will start at the first input coordinate by default.
+Not all combinations of roundtrip, source, and destination are supported. Right now, the following combinations are possible:
+
+roundtrip	source	destination	supported
+true	first	last	yes
+true	first	any	yes
+true	any	last	yes
+true	any	any	yes
+false	first	last	yes
+false	first	any	no
+false	any	last	no
+false	any	any	no
+Example request: Retrieve an optimization
+# Request an optimized car trip with no additional options
+
+curl "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/-122.42,37.78;-122.45,37.91;-122.48,37.73?access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# Request an optimized bicycle trip with steps and a GeoJSON response
+
+curl "https://api.mapbox.com/optimized-trips/v1/mapbox/cycling/-122.42,37.78;-122.45,37.91;-122.48,37.73?steps=true&geometries=geojson&access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# Request an optimized car round trip in Berlin with four coordinates, starting at the first coordinate pair and ending at the last coordinate pair
+
+curl "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.388860,52.517037;13.397634,52.529407;13.428555,52.523219;13.418555,52.523215?source=first&destination=last&roundtrip=true&access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# Request an optimized car trip with four coordinates and one distributions constraint where the last given coordinate must be visited before the second
+
+curl "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.388860,52.517037;13.397634,52.529407;13.428555,52.523219;13.418555,52.523215?roundtrip=true&distributions=3,1&access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# Request an optimized car trip with specified waypoint approach bearings and turn-by-turn instructions
+
+curl "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/-122.42,37.78;-122.45,37.91;-122.48,37.73?radiuses=unlimited;unlimited;unlimited&bearings=45,90;90,1;340,45&steps=true&access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+Response: Retrieve an optimization
+The response to an Optimization API request is a JSON object that contains the following properties:
+
+Property	Type	Description
+code	string	Indicates the state of the response. This is a separate code than the HTTP status code. On normal valid responses, the value will be Ok.
+waypoints	array	An array of waypoint objects. Each waypoint is an input coordinate snapped to the road and path network. The waypoints appear in the array in the order of the input coordinates.
+trips	array	An array of 0 or 1 trip objects.
+Waypoint objects
+A waypoint object is an input coordinate snapped to the roads network that contains the following properties:
+
+Property	Type	Description
+name	string	The name of the road or path that the input coordinate snapped to.
+location	array	An array containing the [longitude, latitude] of the snapped coordinate.
+trips_index	integer	The index of the trip object that contains this waypoint in the trips array.
+waypoint_index	integer	The index of the position of the given waypoint within the trip.
+Trip object
+A trip object describes a route through multiple waypoints, and has the following properties:
+
+Property	Type	Description
+geometry	string	Depending on the geometries parameter, this is either a GeoJSON LineString or a Polyline string. Depending on the overview parameter, this is the complete route geometry (full), a simplified geometry to the zoom level at which the route can be displayed in full (simplified), or is not included (false).
+legs	array	An array of route leg objects.
+weight	number	A float indicating the weight in units described by weight_name. Each road potentially included in a route is assigned a weight value, and the Optimization API returns the route that has the smallest possible total weight.
+weight_name	string	A string indicating which weight the API used to determine the returned route. The default weight is routability, which is duration-based, with additional penalties for less desirable maneuvers.
+duration	number	A float indicating the estimated travel time, in seconds.
+distance	number	A float indicating the distance traveled, in meters.
+A trip object has the same format as a route object in the Directions API.
+
+Example response object
+{
+  "code": "Ok",
+  "waypoints": [
+    {
+      "name": "North Lake Boulevard",
+      "location": [-120.141159, 39.170872],
+      "waypoint_index": 0,
+      "trips_index": 0
+    },
+    {
+      "name": "Virginia Drive",
+      "location": [-120.14984, 39.159985],
+      "waypoint_index": 2,
+      "trips_index": 0
+    },
+    {
+      "name": "Fairway Drive",
+      "location": [-120.150648, 39.340689],
+      "waypoint_index": 1,
+      "trips_index": 0
+    }
+  ],
+  "trips": [
+    {
+      "geometry": "}panFfahSia@bp@nDcCpYbCqYou@uDsP_U",
+      "legs": [
+        {
+          "summary": "",
+          "weight": 1962.8,
+          "duration": 1876.9,
+          "steps": [],
+          "distance": 31507.9
+        },
+        {
+          "summary": "",
+          "weight": 2211.9,
+          "duration": 2035.1,
+          "steps": [],
+          "distance": 32720.5
+        },
+        {
+          "summary": "",
+          "weight": 283.5,
+          "duration": 238.1,
+          "steps": [],
+          "distance": 1885.2
+        }
+      ],
+      "weight_name": "routability",
+      "weight": 4458.2,
+      "duration": 4150.1,
+      "distance": 66113.6
+    }
+  ]
+}
+Supported libraries: Retrieve an optimization
+Mapbox wrapper libraries help you integrate Mapbox APIs into your existing application. The following SDK supports this endpoint:
+
+Mapbox Java SDK
+See the SDK documentation for details and examples of how to use the relevant methods to query this endpoint.
+
+Optimization v1 API errors
+On error, the server responds with different HTTP status codes:
+
+For responses with HTTP status codes lower than 500, the JSON response body includes the code property, which may be used by client programs to manage control flow. The response body may also include a message property with a human-readable explanation of the error.
+If a server error occurs, the HTTP status code will be 500 or higher and the response will not include a code property.
+Response body code	HTTP status code	Description
+Ok	200	Normal success case.
+NoRoute	200	There was no route found for the given coordinates. Check for impossible routes (for example, routes over oceans without ferry connections) or incorrectly formatted coordinates.
+NoTrips	200	For one coordinate, no route to other coordinates available. Check for impossible routes (for example, routes over oceans without ferry connections).
+NotImplemented	200	For the given combination of source, destination, and roundtrip, this request is not supported.
+NoSegment	200	No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road.
+Not Authorized - No Token	401	No token was used in the query.
+Not Authorized - Invalid Token	401	Check the access token you used in the query.
+Forbidden	403	There may be an issue with your account. Check your Account page for more details.
+
+In some cases, using an access tokens with URL restrictions can also result in a 403 error. For more information, see our Token management guide.
+ProfileNotFound	404	Use a valid profile as described in Retrieve an optimization.
+InvalidInput	422	The given request was not valid. The message key of the response will hold an explanation of the invalid input.
+All other properties might be undefined.
+
+Optimization v1 API restrictions and limits
+Maximum 12 coordinates per request
+Maximum 25 distributions per request
+Maximum 300 requests per minute
+If you require a higher rate limit,contact us.
+Optimization v1 API pricing
+Billed by requests
+See rates and discounts per Optimization API request in the pricing page's Navigation section
+Usage of the Optimization API is measured in API requests. A request that contains multiple waypoints is billed as a single API request. Details about the number of Optimization API requests included in the free tier and the cost per request beyond what is included in the free tier are available on the pricing page.
+
+Was this page helpful?
+© Mapbox All Rights Reserved
+Terms
+Privacy
+Security
+Your California Privacy Choices
+
+
+All docschevron-rightAPI Docschevron-rightNavigationchevron-rightUsing HTTP POST
+Using HTTP POST
+On this page
+Example HTTP POST requests
+The Directions API and Map Matching API both support access using the HTTP POST method. HTTP POST should be used for large requests, since both the Directions and Map Matching APIs have a size limit of approximately 8100 bytes on GET request URLs. POST requests are still subject to your account's request size limits.
+
+If your request falls within the default limits (25 for Directions API requests using driving, walking, and cycling profiles or 3 for request using the driving-traffic profile; 100 for Map Matching API requests), a GET request will work for you and you do not need to use POST. If your account limits are larger than these defaults and you receive an HTTP 413 ("Request entity too large") or HTTP 414 ("Request URL too large") error when you make a GET request to either API, then using POST is a good option for you.
+
+To submit a request using HTTP POST, make the following changes to the request:
+
+The HTTP method must be POST.
+The Content-Type of the request must be application/x-www-form-urlencoded.
+The coordinate list must be present in the request body as the coordinates= parameter. Do not put coordinates in the URL.
+The access_token parameter must be part of the POST URL, not the body. All other parameters must be part of the request body.
+A POST request for the Map Matching API or the Directions API looks like this:
+
+POST /{api_name}/{api_version}/mapbox/{profile}?access_token={your_access_token} HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+
+coordinates={lon1,lat1;lon2,lat2;...;lonN,latN}
+Example HTTP POST requests
+# POST request to Map Matching API
+curl -d "coordinates=-117.17282,32.71204;-117.17288,32.71225;-117.17293,32.71244;-117.17292,32.71256;-117.17298,32.712603;-117.17314,32.71259;-117.17334,32.71254" "https://api.mapbox.com/matching/v5/mapbox/driving?access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# POST request to Directions API with optional parameters
+curl -d "coordinates=2.344003,48.85805;2.34675,48.85727;2.34868,48.85936;2.34955,48.86084;2.34955,48.86088;2.349625,48.86102;2.34982,48.86125&steps=true&waypoints=0;6&waypoint_names=Home;Work&banner_instructions=true" "https://api.mapbox.com/directions/v5/mapbox/driving?access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+Was this page helpful?
+© Mapbox All Rights Reserved
+Terms
+Privacy
+Security
+Your California Privacy ChoicesAll docschevron-rightAPI Docschevron-rightNavigationchevron-rightUsing HTTP POST
+Using HTTP POST
+On this page
+Example HTTP POST requests
+The Directions API and Map Matching API both support access using the HTTP POST method. HTTP POST should be used for large requests, since both the Directions and Map Matching APIs have a size limit of approximately 8100 bytes on GET request URLs. POST requests are still subject to your account's request size limits.
+
+If your request falls within the default limits (25 for Directions API requests using driving, walking, and cycling profiles or 3 for request using the driving-traffic profile; 100 for Map Matching API requests), a GET request will work for you and you do not need to use POST. If your account limits are larger than these defaults and you receive an HTTP 413 ("Request entity too large") or HTTP 414 ("Request URL too large") error when you make a GET request to either API, then using POST is a good option for you.
+
+To submit a request using HTTP POST, make the following changes to the request:
+
+The HTTP method must be POST.
+The Content-Type of the request must be application/x-www-form-urlencoded.
+The coordinate list must be present in the request body as the coordinates= parameter. Do not put coordinates in the URL.
+The access_token parameter must be part of the POST URL, not the body. All other parameters must be part of the request body.
+A POST request for the Map Matching API or the Directions API looks like this:
+
+POST /{api_name}/{api_version}/mapbox/{profile}?access_token={your_access_token} HTTP/1.0
+Content-Type: application/x-www-form-urlencoded
+
+coordinates={lon1,lat1;lon2,lat2;...;lonN,latN}
+Example HTTP POST requests
+# POST request to Map Matching API
+curl -d "coordinates=-117.17282,32.71204;-117.17288,32.71225;-117.17293,32.71244;-117.17292,32.71256;-117.17298,32.712603;-117.17314,32.71259;-117.17334,32.71254" "https://api.mapbox.com/matching/v5/mapbox/driving?access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+
+# POST request to Directions API with optional parameters
+curl -d "coordinates=2.344003,48.85805;2.34675,48.85727;2.34868,48.85936;2.34955,48.86084;2.34955,48.86088;2.349625,48.86102;2.34982,48.86125&steps=true&waypoints=0;6&waypoint_names=Home;Work&banner_instructions=true" "https://api.mapbox.com/directions/v5/mapbox/driving?access_token=pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+Was this page helpful?
+© Mapbox All Rights Reserved
+Terms
+Privacy
+Security
+Your California Privacy Choices
+

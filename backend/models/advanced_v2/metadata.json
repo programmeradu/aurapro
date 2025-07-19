@@ -1,0 +1,82 @@
+{
+  "model_type": "Advanced Ensemble V2 (XGBoost + Random Forest + Gradient Boosting)",
+  "training_date": "2025-07-16T15:51:38.255700",
+  "feature_columns": [
+    "total_stops_in_trip",
+    "departure_hour",
+    "departure_minute",
+    "stop_sequence",
+    "stops_remaining",
+    "trip_progress",
+    "route_type",
+    "day_of_week",
+    "is_weekend",
+    "is_rush_hour",
+    "is_market_day",
+    "is_prayer_time",
+    "is_school_hours",
+    "is_business_hours",
+    "is_rain_season",
+    "is_harmattan",
+    "hour_sin",
+    "hour_cos",
+    "minute_sin",
+    "minute_cos",
+    "day_sin",
+    "day_cos",
+    "congestion_factor",
+    "route_efficiency",
+    "route_popularity",
+    "weather_factor",
+    "rain_probability",
+    "economic_activity",
+    "fuel_price_factor",
+    "estimated_distance",
+    "adjusted_speed",
+    "historical_delay_factor",
+    "route_reliability",
+    "rush_distance_interaction",
+    "progress_congestion_interaction",
+    "stops_efficiency_interaction",
+    "weekend_hour_interaction",
+    "market_congestion_interaction",
+    "stops_squared",
+    "progress_squared",
+    "congestion_squared"
+  ],
+  "performance": {
+    "xgboost": {
+      "r2": 0.9804176047584592,
+      "mse": 26.2463345989838,
+      "mae": 3.1709505020451267,
+      "rmse": 5.123117663979991
+    },
+    "random_forest": {
+      "r2": 0.9610569319690503,
+      "mse": 52.19549402634112,
+      "mae": 4.683703371895111,
+      "rmse": 7.224644906591681
+    },
+    "gradient_boosting": {
+      "r2": 0.9836857203854383,
+      "mse": 21.86607083677027,
+      "mae": 2.9610531552485355,
+      "rmse": 4.6761170683346105
+    },
+    "ensemble": {
+      "r2": 0.977686975221702,
+      "mse": 29.90620437505505,
+      "mae": 3.4432205713175463,
+      "rmse": 5.468656542063604,
+      "weights": {
+        "xgboost": 0.45,
+        "random_forest": 0.35,
+        "gradient_boosting": 0.2
+      }
+    }
+  },
+  "data_source": "Enhanced Synthetic with Ghana Patterns",
+  "ghana_specific_features": true,
+  "target_achieved": true,
+  "production_ready": true
+}

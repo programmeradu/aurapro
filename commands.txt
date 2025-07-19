@@ -1,0 +1,5 @@
+cd C:\Users\sam\Downloads\aura\backend
+python -m uvicorn main:app --host 127.0.0.1 --port 8002 --reload
+
+cd C:\Users\sam\Downloads\aura
+streamlit run app.py --server.port 8503

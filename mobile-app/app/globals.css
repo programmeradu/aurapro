@@ -1,0 +1,645 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Mobile-First Responsive Enhancements for Ghana Devices */
+
+@layer base {
+  /* Enhanced mobile viewport handling */
+  html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior: none;
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
+  }
+
+  /* Enhanced touch targets for mobile */
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px; /* iOS recommended minimum */
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  /* Improved form elements for mobile */
+  input,
+  textarea,
+  select {
+    font-size: 16px; /* Prevent zoom on iOS */
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  /* Enhanced focus states for accessibility */
+  *:focus-visible {
+    outline: 2px solid #006B3F;
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  /* Mobile-optimized container classes */
+  .container-mobile {
+    @apply w-full max-w-sm mx-auto px-4;
+  }
+
+  .container-tablet {
+    @apply w-full max-w-2xl mx-auto px-6;
+  }
+
+  .container-desktop {
+    @apply w-full max-w-7xl mx-auto px-8;
+  }
+
+  /* Responsive grid systems */
+  .grid-mobile {
+    @apply grid grid-cols-1 gap-4;
+  }
+
+  .grid-tablet {
+    @apply grid grid-cols-2 gap-6 md:grid-cols-3;
+  }
+
+  .grid-desktop {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  /* Mobile-first card components */
+  .card-mobile {
+    @apply bg-white rounded-2xl shadow-sm border border-gray-100 p-4 transition-all duration-200;
+  }
+
+  .card-mobile:hover {
+    @apply shadow-md transform scale-[1.02];
+  }
+
+  .card-mobile:active {
+    @apply scale-[0.98] shadow-sm;
+  }
+
+  /* Enhanced button styles for mobile */
+  .btn-primary-mobile {
+    @apply bg-aura-primary text-white font-medium py-3 px-6 rounded-xl min-h-[48px]
+           flex items-center justify-center space-x-2 transition-all duration-200
+           active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+           focus:ring-2 focus:ring-aura-primary focus:ring-offset-2;
+  }
+
+  .btn-secondary-mobile {
+    @apply bg-white text-aura-primary border-2 border-aura-primary font-medium
+           py-3 px-6 rounded-xl min-h-[48px] flex items-center justify-center space-x-2
+           transition-all duration-200 active:scale-95 disabled:opacity-50
+           disabled:cursor-not-allowed focus:ring-2 focus:ring-aura-primary focus:ring-offset-2;
+  }
+
+  .btn-ghost-mobile {
+    @apply text-gray-700 font-medium py-3 px-6 rounded-xl min-h-[48px]
+           flex items-center justify-center space-x-2 transition-all duration-200
+           hover:bg-gray-100 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed
+           focus:ring-2 focus:ring-gray-300 focus:ring-offset-2;
+  }
+
+  /* Mobile navigation styles */
+  .nav-mobile {
+    @apply fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200
+           safe-area-bottom z-50 px-2 py-2;
+  }
+
+  .nav-item-mobile {
+    @apply flex-1 flex flex-col items-center justify-center py-2 px-1
+           min-h-[60px] rounded-xl transition-all duration-200 tap-target;
+  }
+
+  .nav-item-mobile.active {
+    @apply bg-aura-primary/10 text-aura-primary;
+  }
+
+  /* Form input styles for mobile */
+  .input-mobile {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl text-base
+           focus:ring-2 focus:ring-aura-primary focus:border-aura-primary
+           transition-all duration-200 bg-white placeholder-gray-500;
+  }
+
+  .textarea-mobile {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl text-base
+           focus:ring-2 focus:ring-aura-primary focus:border-aura-primary
+           transition-all duration-200 bg-white placeholder-gray-500 resize-none;
+  }
+
+  .select-mobile {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-xl text-base
+           focus:ring-2 focus:ring-aura-primary focus:border-aura-primary
+           transition-all duration-200 bg-white appearance-none;
+  }
+}
+
+@layer utilities {
+  /* Safe area utilities for mobile devices */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  .safe-area-inset {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Mobile viewport utilities */
+  .min-h-screen-safe {
+    min-height: 100vh;
+    min-height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
+  .h-screen-safe {
+    height: 100vh;
+    height: calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+  }
+
+  /* Touch-friendly tap targets */
+  .tap-target {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  .tap-target-large {
+    min-height: 56px;
+    min-width: 56px;
+    touch-action: manipulation;
+  }
+
+  /* Mobile-optimized shadows */
+  .shadow-mobile {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .shadow-floating {
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  }
+
+  /* Responsive text utilities */
+  .text-responsive-xs {
+    @apply text-xs sm:text-sm;
+  }
+
+  .text-responsive-sm {
+    @apply text-sm sm:text-base;
+  }
+
+  .text-responsive-base {
+    @apply text-base sm:text-lg;
+  }
+
+  .text-responsive-lg {
+    @apply text-lg sm:text-xl;
+  }
+
+  .text-responsive-xl {
+    @apply text-xl sm:text-2xl;
+  }
+
+  .text-responsive-2xl {
+    @apply text-2xl sm:text-3xl;
+  }
+
+  /* Mobile-first spacing utilities */
+  .space-mobile {
+    @apply space-y-4 md:space-y-6;
+  }
+
+  .gap-mobile {
+    @apply gap-4 md:gap-6;
+  }
+
+  .p-mobile {
+    @apply p-4 md:p-6;
+  }
+
+  .px-mobile {
+    @apply px-4 md:px-6;
+  }
+
+  .py-mobile {
+    @apply py-4 md:py-6;
+  }
+
+  /* Responsive grid utilities */
+  .grid-responsive {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+
+  .grid-responsive-2 {
+    @apply grid grid-cols-1 md:grid-cols-2;
+  }
+
+  .grid-responsive-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+
+  /* Mobile-optimized flex utilities */
+  .flex-mobile-col {
+    @apply flex flex-col md:flex-row;
+  }
+
+  .flex-mobile-row {
+    @apply flex flex-row md:flex-col;
+  }
+
+  /* Hide/show utilities for different screen sizes */
+  .mobile-only {
+    @apply block md:hidden;
+  }
+
+  .tablet-up {
+    @apply hidden md:block;
+  }
+
+  .desktop-only {
+    @apply hidden lg:block;
+  }
+
+  /* Mobile-specific positioning */
+  .fixed-mobile-bottom {
+    @apply fixed bottom-0 left-0 right-0 z-50;
+  }
+
+  .sticky-mobile-top {
+    @apply sticky top-0 z-40;
+  }
+
+  /* Overflow handling for mobile */
+  .overflow-mobile {
+    @apply overflow-hidden md:overflow-visible;
+  }
+
+  .scroll-mobile {
+    @apply overflow-y-auto overscroll-contain;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* CSS Variables for theming */
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+  --font-poppins: 'Poppins', system-ui, sans-serif;
+  
+  /* Ghana flag colors */
+  --ghana-red: #CE1126;
+  --ghana-gold: #FCD116;
+  --ghana-green: #006B3F;
+  --ghana-star: #000000;
+  
+  /* AURA brand colors */
+  --aura-primary: #006B3F;
+  --aura-secondary: #FCD116;
+  --aura-accent: #CE1126;
+  --aura-dark: #1a1a1a;
+  --aura-light: #f8f9fa;
+  
+  /* Transport colors */
+  --transport-bus: #3B82F6;
+  --transport-trotro: #F59E0B;
+  --transport-taxi: #EF4444;
+  --transport-walking: #10B981;
+  --transport-route: #8B5CF6;
+  
+  /* Status colors */
+  --status-online: #10B981;
+  --status-offline: #EF4444;
+  --status-delayed: #F59E0B;
+  --status-ontime: #3B82F6;
+}
+
+/* Base styles */
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: var(--font-inter);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* Mobile-specific styles */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+  
+  input, textarea, select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+/* Safe area support for devices with notches */
+.safe-area-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Custom scrollbar for webkit browsers */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scrolling for mobile */
+.scroll-smooth-mobile {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply bg-aura-primary text-white font-medium py-3 px-6 rounded-xl transition-all duration-200 active:scale-95 tap-target;
+}
+
+.btn-secondary {
+  @apply bg-aura-secondary text-aura-dark font-medium py-3 px-6 rounded-xl transition-all duration-200 active:scale-95 tap-target;
+}
+
+.btn-outline {
+  @apply border-2 border-aura-primary text-aura-primary font-medium py-3 px-6 rounded-xl transition-all duration-200 active:scale-95 tap-target;
+}
+
+.btn-ghost {
+  @apply text-aura-primary font-medium py-3 px-6 rounded-xl transition-all duration-200 active:scale-95 tap-target hover:bg-aura-primary hover:bg-opacity-10;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white rounded-2xl shadow-mobile border border-ui-border;
+}
+
+.card-hover {
+  @apply card transition-all duration-200 hover:shadow-mobile-lg hover:-translate-y-1;
+}
+
+/* Input styles */
+.input-field {
+  @apply w-full px-4 py-3 border border-ui-border rounded-xl focus:ring-2 focus:ring-aura-primary focus:border-aura-primary transition-colors duration-200;
+}
+
+/* Loading animations */
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.loading-spin {
+  animation: spin 1s linear infinite;
+}
+
+.loading-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Skeleton loading */
+.skeleton {
+  @apply animate-pulse bg-gray-200 rounded;
+}
+
+/* Status indicators */
+.status-online {
+  @apply bg-status-online;
+}
+
+.status-offline {
+  @apply bg-status-offline;
+}
+
+.status-delayed {
+  @apply bg-status-delayed;
+}
+
+.status-ontime {
+  @apply bg-status-ontime;
+}
+
+/* Transport type indicators */
+.transport-bus {
+  @apply bg-transport-bus;
+}
+
+.transport-trotro {
+  @apply bg-transport-trotro;
+}
+
+.transport-taxi {
+  @apply bg-transport-taxi;
+}
+
+.transport-walking {
+  @apply bg-transport-walking;
+}
+
+.transport-route {
+  @apply bg-transport-route;
+}
+
+/* Map styles */
+.mapboxgl-popup {
+  max-width: 300px;
+}
+
+.mapboxgl-popup-content {
+  @apply rounded-xl shadow-mobile-lg border-0 p-0;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: white;
+}
+
+.mapboxgl-ctrl-group {
+  @apply rounded-xl shadow-mobile;
+}
+
+.mapboxgl-ctrl-group button {
+  @apply tap-target;
+}
+
+/* Custom animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.animate-fade-in-down {
+  animation: fadeInDown 0.5s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+/* Focus styles for accessibility */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-aura-primary focus:ring-offset-2;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    @apply border-2 border-gray-800;
+  }
+  
+  .btn-primary {
+    @apply border-2 border-white;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .scroll-smooth-mobile {
+    scroll-behavior: auto;
+  }
+}

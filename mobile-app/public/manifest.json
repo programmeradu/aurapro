@@ -1,0 +1,158 @@
+{
+  "name": "AURA Commuter - Ghana Transport",
+  "short_name": "AURA Commuter",
+  "description": "Real-time transport tracking and journey planning for Ghana commuters",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#006B3F",
+  "theme_color": "#006B3F",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-GH",
+  "dir": "ltr",
+  
+  "icons": [
+    {
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    }
+  ],
+  
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-home.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Home screen showing real-time transport updates"
+    },
+    {
+      "src": "/screenshots/mobile-map.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Live vehicle tracking on interactive map"
+    },
+    {
+      "src": "/screenshots/mobile-journey.png",
+      "sizes": "375x812",
+      "type": "image/png",
+      "platform": "narrow",
+      "label": "Journey planning with route options"
+    }
+  ],
+  
+  "categories": [
+    "travel",
+    "navigation",
+    "utilities",
+    "productivity"
+  ],
+  
+  "shortcuts": [
+    {
+      "name": "Track Vehicles",
+      "short_name": "Track",
+      "description": "View real-time vehicle locations",
+      "url": "/track",
+      "icons": [
+        {
+          "src": "/icons/shortcut-track.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Plan Journey",
+      "short_name": "Plan",
+      "description": "Plan your journey with route options",
+      "url": "/journey",
+      "icons": [
+        {
+          "src": "/icons/shortcut-journey.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Report Issue",
+      "short_name": "Report",
+      "description": "Report transport issues or feedback",
+      "url": "/report",
+      "icons": [
+        {
+          "src": "/icons/shortcut-report.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://aura.transport.gov.gh/"
+    }
+  ],
+  
+  "prefer_related_applications": false,
+  
+  "edge_side_panel": {
+    "preferred_width": 400
+  },
+  
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
+  
+  "protocol_handlers": [
+    {
+      "protocol": "web+aura",
+      "url": "/share?url=%s"
+    }
+  ]
+}

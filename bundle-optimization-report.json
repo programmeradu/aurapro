@@ -1,0 +1,69 @@
+{
+  "timestamp": "2025-07-17T11:49:51.209Z",
+  "analysis": {
+    "totalDependencies": 15,
+    "unusedDependencies": [
+      "@nextui-org/react",
+      "@nextui-org/theme",
+      "@types/socket.io-client",
+      "axios",
+      "date-fns",
+      "jspdf-autotable",
+      "react-dom",
+      "react-icons",
+      "react-map-gl",
+      "tailwindcss"
+    ],
+    "redundantDependencies": [
+      {
+        "packages": [
+          "react-icons",
+          "lucide-react"
+        ],
+        "reason": "Multiple icon libraries",
+        "recommendation": "Standardize on lucide-react, remove react-icons"
+      },
+      {
+        "packages": [
+          "react-map-gl",
+          "mapbox-gl"
+        ],
+        "reason": "Potential map library redundancy",
+        "recommendation": "Verify if both are needed, consider using only mapbox-gl"
+      }
+    ],
+    "optimizationRecommendations": [
+      {
+        "type": "tree-shaking",
+        "title": "Improve Tree Shaking",
+        "actions": [
+          "Use named imports instead of default imports where possible",
+          "Import only specific functions from large libraries",
+          "Configure webpack to enable better tree shaking"
+        ]
+      },
+      {
+        "type": "code-splitting",
+        "title": "Implement Code Splitting",
+        "actions": [
+          "Lazy load dashboard components",
+          "Split vendor bundles",
+          "Use dynamic imports for heavy components"
+        ]
+      },
+      {
+        "type": "bundle-analysis",
+        "title": "Bundle Analysis",
+        "actions": [
+          "Add webpack-bundle-analyzer",
+          "Monitor bundle size in CI/CD",
+          "Set performance budgets"
+        ]
+      }
+    ]
+  },
+  "savings": {
+    "removedDependencies": 10,
+    "estimatedSizeReduction": "500KB"
+  }
+}

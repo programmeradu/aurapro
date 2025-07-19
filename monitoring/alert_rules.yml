@@ -1,0 +1,235 @@
+# Alert rules for AURA Command Center monitoring
+groups:
+  # Application Health Alerts
+  - name: aura_application
+    rules:
+      - alert: AuraApplicationDown
+        expr: up{job="aura-app"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: aura-app
+        annotations:
+          summary: "AURA application is down"
+          description: "AURA application has been down for more than 1 minute"
+
+      - alert: AuraHighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="aura-app"}[5m])) > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: aura-app
+        annotations:
+          summary: "High response time detected"
+          description: "95th percentile response time is {{ $value }}s"
+
+      - alert: AuraHighErrorRate
+        expr: rate(http_requests_total{job="aura-app",status=~"5.."}[5m]) / rate(http_requests_total{job="aura-app"}[5m]) > 0.05
+        for: 5m
+        labels:
+          severity: critical
+          service: aura-app
+        annotations:
+          summary: "High error rate detected"
+          description: "Error rate is {{ $value | humanizePercentage }}"
+
+      - alert: AuraMemoryUsageHigh
+        expr: (process_resident_memory_bytes{job="aura-app"} / 1024 / 1024 / 1024) > 2
+        for: 10m
+        labels:
+          severity: warning
+          service: aura-app
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}GB"
+
+  # WebSocket Server Alerts
+  - name: aura_websocket
+    rules:
+      - alert: WebSocketServerDown
+        expr: up{job="aura-websocket"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: websocket
+        annotations:
+          summary: "WebSocket server is down"
+          description: "WebSocket server has been down for more than 1 minute"
+
+      - alert: WebSocketConnectionsHigh
+        expr: websocket_connections_active > 1000
+        for: 5m
+        labels:
+          severity: warning
+          service: websocket
+        annotations:
+          summary: "High number of WebSocket connections"
+          description: "Active connections: {{ $value }}"
+
+  # Database Alerts
+  - name: aura_database
+    rules:
+      - alert: PostgreSQLDown
+        expr: up{job="postgres"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: database
+        annotations:
+          summary: "PostgreSQL is down"
+          description: "PostgreSQL database has been down for more than 1 minute"
+
+      - alert: PostgreSQLHighConnections
+        expr: pg_stat_database_numbackends / pg_settings_max_connections > 0.8
+        for: 5m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "High database connections"
+          description: "Database connections at {{ $value | humanizePercentage }} of maximum"
+
+      - alert: PostgreSQLSlowQueries
+        expr: rate(pg_stat_database_tup_returned[5m]) / rate(pg_stat_database_tup_fetched[5m]) < 0.1
+        for: 10m
+        labels:
+          severity: warning
+          service: database
+        annotations:
+          summary: "Slow database queries detected"
+          description: "Query efficiency is {{ $value | humanizePercentage }}"
+
+  # Redis Cache Alerts
+  - name: aura_redis
+    rules:
+      - alert: RedisDown
+        expr: up{job="redis"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: cache
+        annotations:
+          summary: "Redis is down"
+          description: "Redis cache has been down for more than 1 minute"
+
+      - alert: RedisMemoryHigh
+        expr: redis_memory_used_bytes / redis_memory_max_bytes > 0.9
+        for: 5m
+        labels:
+          severity: warning
+          service: cache
+        annotations:
+          summary: "Redis memory usage high"
+          description: "Redis memory usage at {{ $value | humanizePercentage }}"
+
+  # System Resource Alerts
+  - name: aura_system
+    rules:
+      - alert: HighCPUUsage
+        expr: 100 - (avg by(instance) (rate(node_cpu_seconds_total{mode="idle"}[5m])) * 100) > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (1 - (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes)) * 100 > 85
+        for: 10m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}% on {{ $labels.instance }}"
+
+      - alert: DiskSpaceLow
+        expr: (1 - (node_filesystem_avail_bytes / node_filesystem_size_bytes)) * 100 > 85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "Low disk space"
+          description: "Disk usage is {{ $value }}% on {{ $labels.instance }}"
+
+  # Business Logic Alerts
+  - name: aura_business
+    rules:
+      - alert: VehicleDataStale
+        expr: time() - aura_last_vehicle_update_timestamp > 300
+        for: 2m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "Vehicle data is stale"
+          description: "No vehicle updates received for {{ $value }}s"
+
+      - alert: RouteOptimizationFailed
+        expr: increase(aura_route_optimization_failures_total[10m]) > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: business
+        annotations:
+          summary: "Route optimization failures"
+          description: "{{ $value }} route optimization failures in the last 10 minutes"
+
+      - alert: CriticalVehicleAlert
+        expr: aura_vehicle_critical_alerts > 0
+        for: 0m
+        labels:
+          severity: critical
+          service: business
+        annotations:
+          summary: "Critical vehicle alert"
+          description: "{{ $value }} vehicles have critical alerts"
+
+  # External Service Alerts
+  - name: aura_external
+    rules:
+      - alert: MapboxAPIDown
+        expr: probe_success{job="blackbox",instance="https://api.mapbox.com"} == 0
+        for: 5m
+        labels:
+          severity: warning
+          service: external
+        annotations:
+          summary: "Mapbox API is down"
+          description: "Mapbox API is not responding"
+
+      - alert: SSLCertificateExpiring
+        expr: ssl_cert_not_after - time() < 7 * 24 * 3600
+        for: 1h
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "SSL certificate expiring soon"
+          description: "SSL certificate for {{ $labels.instance }} expires in {{ $value | humanizeDuration }}"
+
+  # Security Alerts
+  - name: aura_security
+    rules:
+      - alert: HighFailedLoginAttempts
+        expr: increase(aura_failed_login_attempts_total[5m]) > 10
+        for: 1m
+        labels:
+          severity: warning
+          service: security
+        annotations:
+          summary: "High number of failed login attempts"
+          description: "{{ $value }} failed login attempts in the last 5 minutes"
+
+      - alert: SuspiciousActivity
+        expr: increase(aura_suspicious_requests_total[5m]) > 20
+        for: 2m
+        labels:
+          severity: critical
+          service: security
+        annotations:
+          summary: "Suspicious activity detected"
+          description: "{{ $value }} suspicious requests in the last 5 minutes"

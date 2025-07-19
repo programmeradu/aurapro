@@ -1,0 +1,6 @@
+fare_id,price,currency_type,payment_method,transfers
+LOCAL_SHORT,3.5,GHS,0,0
+LOCAL_MEDIUM,5.0,GHS,0,0
+LOCAL_LONG,8.0,GHS,0,0
+INTERCITY,25.0,GHS,0,0
+BRT,2.5,GHS,1,1

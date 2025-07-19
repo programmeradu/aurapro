@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "MapboxServer": {
+      "command": "npx",
+      "args": ["-y", "@mapbox/mcp-server"],
+      "env": {
+        "MAPBOX_ACCESS_TOKEN": "pk.eyJ1IjoiYWxnb3JpdGhteCIsImEiOiJjbTdob3lzNmwxYjliMmxzamppbDRqMHlhIn0.bBKjPrD_sp6RY5t2-AEnGQ"
+      }
+    },
+    "github.com/modelcontextprotocol/servers/tree/main/src/sequentialthinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    }
+  }
+}

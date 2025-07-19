@@ -1,0 +1,62 @@
+{
+  "model_type": "Traffic Congestion Prediction System",
+  "training_date": "2025-07-16T16:04:00.290214",
+  "feature_columns": [
+    "hour",
+    "minute",
+    "day_of_week",
+    "day_of_month",
+    "month",
+    "hour_sin",
+    "hour_cos",
+    "day_sin",
+    "day_cos",
+    "month_sin",
+    "month_cos",
+    "corridor_capacity",
+    "corridor_length",
+    "corridor_importance",
+    "is_rain_season",
+    "rain_probability",
+    "is_raining",
+    "is_weekend",
+    "is_market_day",
+    "is_friday",
+    "is_sunday",
+    "is_morning_rush",
+    "is_evening_rush",
+    "is_lunch_rush",
+    "is_night",
+    "is_business_hours",
+    "is_school_hours",
+    "network_congestion",
+    "adjacent_congestion",
+    "fuel_price_impact",
+    "economic_activity",
+    "rush_hour_rain",
+    "weekend_market",
+    "capacity_utilization"
+  ],
+  "performance": {
+    "congestion_level": {
+      "r2": 0.9999372198997298,
+      "mse": 2.6500989840352742e-06,
+      "mae": 0.0009254081632467445,
+      "rmse": 0.0016279124620308288,
+      "model_type": "XGBoost Regressor"
+    },
+    "current_speed": {
+      "r2": 0.9999586803615053,
+      "mse": 0.0035901072163494674,
+      "mae": 0.034783582066952534,
+      "rmse": 0.05991750342220099,
+      "model_type": "XGBoost Regressor"
+    },
+    "congestion_class": {
+      "accuracy": 0.99525,
+      "model_type": "XGBoost Classifier"
+    }
+  },
+  "accra_specific": true,
+  "target_achieved": true
+}

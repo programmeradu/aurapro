@@ -1,0 +1,24 @@
+{
+  "model_type": "NeuralNetwork",
+  "training_date": "2025-07-16T14:34:27.744615",
+  "feature_columns": [
+    "total_stops_in_trip",
+    "departure_hour",
+    "departure_minute",
+    "is_weekend",
+    "is_rush_hour",
+    "stops_remaining",
+    "trip_progress",
+    "route_type"
+  ],
+  "performance": {
+    "model": "MLPRegressor(hidden_layer_sizes=(100, 50, 25), max_iter=1000, random_state=42)",
+    "mse": 97.61084375353138,
+    "r2": 0.1730564870017708,
+    "mae": 4.401501681144671,
+    "rmse": 9.879820026373526
+  },
+  "data_source": "Ghana GTFS Real Data",
+  "training_samples": 3310,
+  "test_samples": 828
+}

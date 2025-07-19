@@ -1,0 +1,148 @@
+The Ghana AI Hackathon, set for July 2025, is an exciting opportunity for developers to create innovative AI solutions that tackle real-world challenges in Ghana’s agriculture and transportation sectors.
+
+Over two weeks, participants will develop projects that demonstrate technical expertise and address local needs, such as improving crop yields or enhancing urban mobility. The event aims to highlight Ghanaian talent while fostering practical, scalable solutions.
+
+ 
+
+Challenges
+
+Participants can choose between two AI-focused challenges:
+
+Crop Disease Detection: Build an AI model to identify diseases in Ghanaian crops using smartphone or drone images, deployable as a mobile app.
+Public Transport Efficiency Analysis: Develop an AI system to optimize public transport routes in Accra, improving efficiency and accessibility for commuters.
+Requirements
+What to Build 
+1. Smart Agriculture: Crop Disease Detection
+Objective: Create an AI model to detect and classify crop diseases affecting key Ghanaian crops (cashew, cassava, maize, tomato) using images from smartphones or drones. The solution should be practical for farmers, potentially deployable as a mobile app.
+
+Why It’s Challenging: This task requires expertise in computer vision, image preprocessing, and model optimization to handle diverse image conditions (e.g., lighting, angles). The model must be accurate and lightweight for deployment on resource-constrained devices.
+
+Dataset: The CCMT Dataset is ideal, offering 24,881 raw images (6,549 cashew, 7,508 cassava, 5,389 maize, 5,435 tomato) and 102,976 augmented images across 22 disease classes. Validated by expert plant virologists, this dataset is tailored to Ghana’s agricultural context.
+
+Resources: Participants can use pre-trained models like ResNet or EfficientNet from Hugging Face and fine-tune them on the CCMT dataset. Libraries like OpenCV and TensorFlow are recommended for image processing and model training.
+
+ 
+
+ 
+
+2. Transportation: Public Transport Efficiency Analysis
+Objective: Develop an AI system to analyze and optimize public transport routes in Accra, Ghana, improving efficiency and accessibility for commuters. The solution should provide actionable insights, such as optimized routes, schedules, or resource allocation, to reduce congestion, lower emissions, and enhance service quality.
+ 
+
+Why It’s Challenging: Public transport systems are inherently complex, involving variables such as traffic conditions, passenger demand, vehicle capacity, and infrastructure constraints. Optimizing routes requires balancing efficiency with passenger satisfaction, while also accounting for real-world constraints like road closures or varying demand patterns. Additionally, the data available may be sparse, outdated, or incomplete, making it difficult to create accurate and generalizable models. Participants must also demonstrate how their solution can be practically deployed and used by city planners or transport authorities.
+ 
+
+Dataset: The GTFS for Accra, Ghana, collected in May and June 2015, is ideal for this challenge. It includes public transport schedules, geographic information, and route details for Accra’s transport network, structured in the General Transit Feed Specification (GTFS) format, which is widely used for public transit data analysis.
+ 
+
+Resources:
+Optimization Libraries: Tools like OR-Tools (by Google) or PuLP can be used to optimize routes, schedules, and resource allocation.
+Data Visualization: Libraries such as Plotly or Folium are recommended for mapping the transport network and visualizing optimization results.
+Machine Learning: For tasks like predicting passenger demand or clustering similar routes, participants can use libraries like scikit-learn or TensorFlow. Pre-trained models from Hugging Face can be fine-tuned for specific tasks, such as demand forecasting.
+Additional Tools: For handling GTFS data, tools like GTFS-Editor or Transitfeed can assist with data preprocessing and validation.
+ 
+
+What to Submit
+
+Participants must submit the following to demonstrate their solution:
+
+Functional Prototype: A working MVP, such as a web app, mobile app, or dashboard, that showcases the AI model’s functionality.
+
+GitHub Repository: A public repository containing:
+
+Complete source code.
+
+Documentation detailing the approach, challenges, and results.
+
+Clear instructions for running the project, including dependencies.
+
+Presentation: A 5-minute video or slide deck explaining:
+
+The problem addressed and its significance in Ghana.
+
+The AI solution, including technical details and implementation.
+
+The potential impact and deployment strategy.
+
+Optional Report/Blog Post: A written summary of the project, highlighting the methodology, challenges overcome, and outcomes achieved.
+
+ 
+
+Hackathon Resource Notebook
+
+Listen To The Note Summary
+
+Prizes
+$1,750+ in prizes+ other prizes
+1st Place
+$1,000 in cash
+1 winner
+2nd Place
+$500 in cash
+1 winner
+3rd Place
+$250 in cash
+1 winner
+1,500 AWS Credits
+3 winners
+3 Winners will receive $1,500 AWS Credits sponsored by AI For Good.
+
+Devpost Achievements
+Submitting to this hackathon could earn you:
+
+
+First online hackathon
+
+First in-person hackathon
+
+X Hackathons
+ level 1
+
+Hackathon Winner
+ level 1
+
+Generalist
+
+Dual Boot
+
+Dual Boot Winner
+Judges
+Peng Akebuon
+Peng Akebuon
+Co-Founder / CTO / Bridge Labs
+
+Pratik Nalage
+Pratik Nalage
+Senior Software Engineer / Nvidia
+
+Rahul Singh
+Rahul Singh
+Data Science Manager / Adobe
+
+Reagan Rosario
+Reagan Rosario
+Worldwide Specialist Solution Architecture Leader - GenAI / Amazon Web Services
+
+Ramu Asan Anidharan
+Ramu Asan Anidharan
+Full Stack Developer / Deloitte
+
+Kevin Lubin
+Kevin Lubin
+Data Science Manager / Deloitte
+
+Roy Obiri-Yeboah
+Roy Obiri-Yeboah
+Quality analyst / Aya Data
+
+Judging Criteria
+Innovation (25%)
+How original and creative is your AI solution? We seek fresh approaches, unique applications, or novel tech combinations that stand out.
+Technical Complexity (25%)
+How advanced are the AI techniques used? We look for sophisticated algorithms or systems showing technical mastery.
+Impact (20%)
+How well does your solution tackle a big issue? We value clear potential for meaningful change and a defined impact plan.
+Feasibility (20%)
+How practical is your solution for real-world use? We assess implementation ease, scalability, and deployment factors.
+Presentation (10%)
+How clearly do you communicate your solution? We evaluate demo quality, explanation clarity, and engagement.

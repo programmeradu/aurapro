@@ -1,0 +1,26 @@
+route_id,agency_id,route_short_name,route_long_name,route_desc,route_type,route_url,route_color,route_text_color
+R001,GPRTU,Circle-Madina,Circle to Madina via Legon,Major tro-tro route connecting Circle to Madina through University of Ghana,3,,0066CC,FFFFFF
+R002,GPRTU,Kaneshie-Mallam,Kaneshie to Mallam Junction,Popular route from Kaneshie Market to Mallam Junction,3,,FF6600,FFFFFF
+R003,GPRTU,Tema-Accra,Tema Station to Circle,Main route connecting Tema to central Accra,3,,009900,FFFFFF
+R004,GPRTU,Kasoa-Accra,Kasoa to Circle,Major route from Kasoa to central Accra,3,,CC0000,FFFFFF
+R005,GPRTU,Achimota-Lapaz,Achimota to Lapaz,Route connecting Achimota to Lapaz area,3,,9900CC,FFFFFF
+R006,AYALOLO,BRT-Main,Aayalolo BRT Main Line,Bus Rapid Transit main corridor,3,,FF0000,FFFFFF
+R007,METRO_MASS,Accra-Kumasi,Accra to Kumasi Express,Long-distance express service,3,,0099FF,FFFFFF
+R008,GPRTU,Dansoman-Circle,Dansoman to Circle,Route from Dansoman to Circle,3,,FF9900,FFFFFF
+R009,GPRTU,Nungua-Accra,Nungua to Accra Central,Coastal route from Nungua to central Accra,3,,00CC99,FFFFFF
+R010,GPRTU,Adenta-37,Adenta to 37 Military Hospital,Route from Adenta to 37 area,3,,CC6600,FFFFFF
+R011,GPRTU,Weija-Kaneshie,Weija to Kaneshie,Route connecting Weija to Kaneshie,3,,6600CC,FFFFFF
+R012,GPRTU,Ashaiman-Circle,Ashaiman to Circle,Route from Ashaiman to central Accra,3,,FF3366,FFFFFF
+R013,GPRTU,Teshie-Osu,Teshie to Osu,Coastal route from Teshie to Osu,3,,33FF66,FFFFFF
+R014,GPRTU,Dome-Achimota,Dome to Achimota,Route from Dome to Achimota,3,,6633FF,FFFFFF
+R015,GPRTU,Spintex-Circle,Spintex to Circle,Route from Spintex Road to Circle,3,,FF6633,FFFFFF
+R016,GPRTU,East-Legon-Accra,East Legon to Accra Central,Premium route from East Legon,3,,3366FF,FFFFFF
+R017,GPRTU,Ablekuma-Kaneshie,Ablekuma to Kaneshie,Route from Ablekuma to Kaneshie,3,,FF3399,FFFFFF
+R018,GPRTU,Haatso-Legon,Haatso to Legon,Route connecting Haatso to University area,3,,99FF33,FFFFFF
+R019,GPRTU,Pokuase-Achimota,Pokuase to Achimota,Route from Pokuase to Achimota,3,,3399FF,FFFFFF
+R020,GPRTU,Tema-Ashaiman,Tema to Ashaiman,Local route between Tema and Ashaiman,3,,FF9933,FFFFFF
+R021,VIP_TRANSPORT,Accra-Takoradi,Accra to Takoradi VIP,Premium long-distance service,3,,000000,FFFFFF
+R022,STC,Accra-Tamale,Accra to Tamale Express,Northern route express service,3,,006600,FFFFFF
+R023,GPRTU,Airport-Circle,Kotoka Airport to Circle,Airport connection route,3,,0066FF,FFFFFF
+R024,GPRTU,Lapaz-Kwashieman,Lapaz to Kwashieman,Local route in northern Accra,3,,CC3300,FFFFFF
+R025,GPRTU,Mallam-Dansoman,Mallam to Dansoman,Western Accra connection,3,,3300CC,FFFFFF

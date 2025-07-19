@@ -1,0 +1,8 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_phone
+GMA,Greater Accra Metropolitan Assembly,https://ama.gov.gh,Africa/Accra,en,+233-30-266-4861
+GPRTU,Ghana Private Road Transport Union,https://gprtu.org.gh,Africa/Accra,en,+233-24-123-4567
+PROTOA,Progressive Transport Owners Association,https://protoa.gh,Africa/Accra,en,+233-20-987-6543
+METRO_MASS,Metro Mass Transit,https://metromasstransit.com.gh,Africa/Accra,en,+233-30-222-1234
+AYALOLO,Aayalolo Bus Rapid Transit,https://ayalolo.com,Africa/Accra,en,+233-50-555-0123
+VIP_TRANSPORT,VIP Transport,https://viptransport.com.gh,Africa/Accra,en,+233-30-777-8888
+STC,State Transport Corporation,https://stc.gov.gh,Africa/Accra,en,+233-30-666-9999

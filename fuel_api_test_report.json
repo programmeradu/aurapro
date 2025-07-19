@@ -1,0 +1,46 @@
+{
+  "success_rate": 80.0,
+  "total_tests": 5,
+  "passed_tests": 4,
+  "test_time": 5.1143763065338135,
+  "results": {
+    "backend_scraper": {
+      "status": "PASS",
+      "stations_found": 7,
+      "sources_used": [
+        "official_npa",
+        "scraped_shell",
+        "scraped_total",
+        "scraped_goil",
+        "scraped_star",
+        "crowdsourced"
+      ],
+      "national_avg_petrol": 14.338571428571429,
+      "national_avg_diesel": 13.887142857142859
+    },
+    "frontend_structure": {
+      "status": "PASS",
+      "interfaces_found": 3,
+      "data_sources_found": 3,
+      "has_caching": true
+    },
+    "data_quality": {
+      "status": "PASS",
+      "avg_petrol_price": 14.34,
+      "avg_diesel_price": 13.89,
+      "regions_covered": 2,
+      "brands_found": 5,
+      "data_freshness_hours": 0.0
+    },
+    "performance": {
+      "status": "PASS",
+      "db_query_time_ms": 0.7,
+      "cache_ops_time_ms": 0.0,
+      "aggregation_results": 5
+    },
+    "integration": {
+      "status": "FAIL",
+      "error": "GhanaFuelAPI not used in EconomicsAnalyzer"
+    }
+  }
+}

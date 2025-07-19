@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURA WebSocket Connection Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .status {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .status.connected { background: rgba(34, 197, 94, 0.8); }
+        .status.disconnected { background: rgba(239, 68, 68, 0.8); }
+        .status.connecting { background: rgba(251, 191, 36, 0.8); }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #fbbf24;
+        }
+        .url-input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            margin: 10px 0;
+        }
+        .url-input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 AURA WebSocket Connection Test</h1>
+        
+        <div id="status" class="status disconnected">
+            🔌 Disconnected
+        </div>
+
+        <div class="controls">
+            <input type="text" id="urlInput" class="url-input" placeholder="WebSocket URL (default: http://localhost:8002)" value="http://localhost:8002">
+            <button onclick="connect()">🔗 Connect</button>
+            <button onclick="disconnect()">❌ Disconnect</button>
+            <button onclick="clearLog()">🧹 Clear Log</button>
+            <button onclick="testRequests()">🧪 Test Requests</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-value" id="vehicleCount">0</div>
+                <div>Vehicles</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="routeCount">0</div>
+                <div>Routes</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="kpiCount">0</div>
+                <div>KPIs</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="messageCount">0</div>
+                <div>Messages</div>
+            </div>
+        </div>
+
+        <div id="log" class="log"></div>
+    </div>
+
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script>
+        let socket = null;
+        let messageCount = 0;
+        let vehicleCount = 0;
+        let routeCount = 0;
+        let kpiCount = 0;
+
+        function log(message, type = 'info') {
+            const logElement = document.getElementById('log');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: '#ffffff',
+                success: '#10b981',
+                error: '#ef4444',
+                warning: '#f59e0b'
+            };
+            
+            logElement.innerHTML += `<div style="color: ${colors[type]}; margin: 5px 0;">
+                [${timestamp}] ${message}
+            </div>`;
+            logElement.scrollTop = logElement.scrollHeight;
+        }
+
+        function updateStatus(status, message) {
+            const statusElement = document.getElementById('status');
+            statusElement.className = `status ${status}`;
+            statusElement.textContent = message;
+        }
+
+        function updateStats() {
+            document.getElementById('vehicleCount').textContent = vehicleCount;
+            document.getElementById('routeCount').textContent = routeCount;
+            document.getElementById('kpiCount').textContent = kpiCount;
+            document.getElementById('messageCount').textContent = messageCount;
+        }
+
+        function connect() {
+            const url = document.getElementById('urlInput').value || 'http://localhost:8002';
+            
+            if (socket) {
+                log('Disconnecting existing connection...', 'warning');
+                socket.disconnect();
+            }
+
+            log(`🔄 Attempting to connect to: ${url}`, 'info');
+            updateStatus('connecting', '🔄 Connecting...');
+
+            try {
+                socket = io(url, {
+                    transports: ['polling', 'websocket'],
+                    timeout: 20000,
+                    forceNew: true,
+                    autoConnect: true,
+                    reconnection: true,
+                    reconnectionAttempts: 5,
+                    reconnectionDelay: 3000,
+                    reconnectionDelayMax: 15000,
+                    randomizationFactor: 0.3,
+                    upgrade: true,
+                    rememberUpgrade: false
+                });
+
+                socket.on('connect', () => {
+                    log('✅ Connected successfully!', 'success');
+                    log(`🆔 Session ID: ${socket.id}`, 'info');
+                    updateStatus('connected', '✅ Connected');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('disconnect', (reason) => {
+                    log(`❌ Disconnected: ${reason}`, 'error');
+                    updateStatus('disconnected', '❌ Disconnected');
+                });
+
+                socket.on('connect_error', (error) => {
+                    log(`❌ Connection error: ${error.message}`, 'error');
+                    updateStatus('disconnected', '❌ Connection Error');
+                });
+
+                // Data event listeners
+                socket.on('vehicles_update', (data) => {
+                    vehicleCount = data.length;
+                    log(`📊 Received vehicles update: ${data.length} vehicles`, 'success');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('routes_update', (data) => {
+                    routeCount = data.length;
+                    log(`🛣️ Received routes update: ${data.length} routes`, 'success');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('kpis_update', (data) => {
+                    kpiCount = data.length;
+                    log(`📈 Received KPIs update: ${data.length} KPIs`, 'success');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('vehicle_update', (data) => {
+                    log(`🚗 Vehicle update: ${data.id}`, 'info');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('alert', (data) => {
+                    log(`🚨 Alert: ${data.title} - ${data.message}`, 'warning');
+                    messageCount++;
+                    updateStats();
+                });
+
+                socket.on('trips_update', (data) => {
+                    log(`🚌 Received trips update: ${data.length} trips`, 'success');
+                    messageCount++;
+                    updateStats();
+                });
+
+                // Catch all other events
+                socket.onAny((eventName, ...args) => {
+                    if (!['vehicles_update', 'routes_update', 'kpis_update', 'vehicle_update', 'alert', 'trips_update'].includes(eventName)) {
+                        log(`📡 Event: ${eventName}`, 'info');
+                        messageCount++;
+                        updateStats();
+                    }
+                });
+
+            } catch (error) {
+                log(`❌ Connection failed: ${error.message}`, 'error');
+                updateStatus('disconnected', '❌ Connection Failed');
+            }
+        }
+
+        function disconnect() {
+            if (socket) {
+                socket.disconnect();
+                socket = null;
+                log('🔌 Manually disconnected', 'warning');
+                updateStatus('disconnected', '🔌 Disconnected');
+            }
+        }
+
+        function clearLog() {
+            document.getElementById('log').innerHTML = '';
+            messageCount = 0;
+            vehicleCount = 0;
+            routeCount = 0;
+            kpiCount = 0;
+            updateStats();
+        }
+
+        function testRequests() {
+            if (!socket || !socket.connected) {
+                log('❌ Not connected! Please connect first.', 'error');
+                return;
+            }
+
+            log('🧪 Sending test requests...', 'info');
+            
+            socket.emit('request_vehicles');
+            log('📤 Sent: request_vehicles', 'info');
+            
+            socket.emit('request_routes');
+            log('📤 Sent: request_routes', 'info');
+            
+            socket.emit('request_kpis');
+            log('📤 Sent: request_kpis', 'info');
+        }
+
+        // Auto-connect on page load
+        window.onload = () => {
+            log('🚀 AURA WebSocket Test Page Loaded', 'success');
+            log('Click "Connect" to test the WebSocket connection', 'info');
+            updateStats();
+        };
+    </script>
+</body>
+</html>
