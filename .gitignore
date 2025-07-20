@@ -1,2 +1,4 @@
 node_modules
 .next
+backend/models/advanced_v2/random_forest_model.joblib
+venv/
