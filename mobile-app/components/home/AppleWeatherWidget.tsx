@@ -25,7 +25,7 @@ export function WeatherWidget({ className = '' }: WeatherWidgetProps) {
       setIsRefreshing(true)
       setError(null)
       
-      const response = await apiService.getWeatherData()
+      const response = await apiService.getAccraWeather()
       
       if (response.success && response.data) {
         setWeather(response.data)
@@ -205,3 +205,7 @@ export function WeatherWidget({ className = '' }: WeatherWidgetProps) {
     </motion.div>
   )
 }
+
+// Export as AppleWeatherWidget for compatibility
+export const AppleWeatherWidget = WeatherWidget
+export default WeatherWidget

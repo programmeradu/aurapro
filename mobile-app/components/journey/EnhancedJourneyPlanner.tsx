@@ -147,26 +147,30 @@ export function EnhancedJourneyPlanner({ className = '', onJourneySelect }: Jour
         setRoutes(publicRoutes)
       }
 
-      // Process Uber options
-      if (uberResponse.success && uberResponse.data) {
-        const uberRoutes: RouteOption[] = uberResponse.data.map((option: UberEstimate, index: number) => ({
-          id: `uber_${index}`,
+      // Process Uber options (updated for new API)
+      if (uberResponse.success && uberResponse.data && uberResponse.data.success) {
+        const uberData = uberResponse.data
+        const uberRoute: RouteOption = {
+          id: 'uber_ghana',
           type: 'uber' as const,
-          duration: option.duration,
-          cost: (option.low_estimate + option.high_estimate) / 2,
+          duration: Math.round((uberData.duration_seconds || 1200) / 60), // Convert to minutes
+          cost: parseFloat(uberData.estimated_fare?.replace('GH₵', '') || '25'),
           steps: [{
             mode: 'uber',
-            instruction: `${option.display_name} ride`,
-            duration: option.duration,
-            distance: option.distance
+            instruction: `${uberData.product || 'UberX Ghana'} ride`,
+            duration: Math.round((uberData.duration_seconds || 1200) / 60),
+            distance: uberData.distance_km || 5
           }],
-          emissions: calculateEmissions(option.distance, 'car'),
+          emissions: calculateEmissions(uberData.distance_km || 5, 'car'),
           comfort_score: 9,
-          reliability_score: 9
-        }))
+          reliability_score: 9,
+          currency: uberData.currency_code || 'GHS',
+          surge_multiplier: uberData.surge_multiplier || 1.0,
+          api_source: uberData.api_source || 'uber_live'
+        }
 
-        setUberOptions(uberResponse.data)
-        setRoutes(prev => [...prev, ...uberRoutes])
+        setUberOptions([uberData])
+        setRoutes(prev => [...prev, uberRoute])
       }
 
       setShowRoutes(true)

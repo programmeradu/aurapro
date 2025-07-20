@@ -11,15 +11,45 @@
       "static/chunks/main-app.js",
       "static/chunks/app/page.js"
     ],
-    "/track/page": [
+    "/api/user/budget/remaining/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/track/page.js"
+      "static/chunks/app/api/user/budget/remaining/route.js"
+    ],
+    "/api/ai/pending-suggestions/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/ai/pending-suggestions/route.js"
+    ],
+    "/api/community/active-reports/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/community/active-reports/route.js"
+    ],
+    "/api/alerts/active/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/alerts/active/route.js"
+    ],
+    "/api/user/next-trip/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/user/next-trip/route.js"
     ],
     "/api/analytics/recommendations/[id]/metrics/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/api/analytics/recommendations/[id]/metrics/route.js"
+    ],
+    "/api/analytics/system/metrics/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/analytics/system/metrics/route.js"
+    ],
+    "/advanced-map/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/advanced-map/page.js"
     ],
     "/journey/page": [
       "static/chunks/webpack.js",
@@ -27,45 +57,10 @@
       "static/css/app/journey/page.css",
       "static/chunks/app/journey/page.js"
     ],
-    "/community/page": [
+    "/map/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/community/page.js"
-    ],
-    "/api/analytics/system/metrics/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/analytics/system/metrics/route.js"
-    ],
-    "/profile/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/profile/page.js"
-    ],
-    "/api/analytics/events/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/analytics/events/route.js"
-    ],
-    "/api/user/next-trip/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/user/next-trip/route.js"
-    ],
-    "/api/alerts/active/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/alerts/active/route.js"
-    ],
-    "/api/user/budget/remaining/route": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/api/user/budget/remaining/route.js"
-    ],
-    "/_not-found/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/_not-found/page.js"
+      "static/chunks/app/map/page.js"
     ]
   }
 }

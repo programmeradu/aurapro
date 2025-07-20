@@ -1,6 +1,6 @@
 {
   "model_type": "Advanced Ensemble V2 (XGBoost + Random Forest + Gradient Boosting)",
-  "training_date": "2025-07-16T15:51:38.255700",
+  "training_date": "2025-07-20T15:59:03.922036",
   "feature_columns": [
     "total_stops_in_trip",
     "departure_hour",
@@ -54,7 +54,7 @@
     "random_forest": {
       "r2": 0.9610569319690503,
       "mse": 52.19549402634112,
-      "mae": 4.683703371895111,
+      "mae": 4.68370337189511,
       "rmse": 7.224644906591681
     },
     "gradient_boosting": {
@@ -65,7 +65,7 @@
     },
     "ensemble": {
       "r2": 0.977686975221702,
-      "mse": 29.90620437505505,
+      "mse": 29.906204375055054,
       "mae": 3.4432205713175463,
       "rmse": 5.468656542063604,
       "weights": {

@@ -6,8 +6,8 @@ import {
   ChartBarIcon,
   CpuChipIcon,
   ClockIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowTrendingUpIcon,
+  ArrowTrendingDownIcon,
   ArrowPathIcon,
   ExclamationTriangleIcon,
   CheckCircleIcon,
@@ -291,7 +291,7 @@ export default function AnalyticsPage() {
                 >
                   <div className="flex items-center justify-between mb-2">
                     <span className="text-sm font-medium text-gray-600">Confidence</span>
-                    <TrendingUpIcon className={`w-5 h-5 ${getPerformanceColor(mlMetrics.prediction_confidence)}`} />
+                    <ArrowTrendingUpIcon className={`w-5 h-5 ${getPerformanceColor(mlMetrics.prediction_confidence)}`} />
                   </div>
                   <div className={`text-2xl font-bold ${getPerformanceColor(mlMetrics.prediction_confidence)}`}>
                     {mlMetrics.prediction_confidence.toFixed(1)}%

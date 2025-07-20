@@ -376,3 +376,7 @@ function LocationSuggestionItem({
     </motion.button>
   )
 }
+
+// Export as AppleLocationCard for compatibility
+export const AppleLocationCard = LocationCard
+export default LocationCard

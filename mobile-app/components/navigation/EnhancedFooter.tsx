@@ -21,7 +21,7 @@ import {
   UserGroupIcon as UserGroupIconSolid,
   ChartBarIcon as ChartBarIconSolid
 } from '@heroicons/react/24/solid'
-import { apiService } from '@/services/apiService'
+import { apiService, unifiedDataService } from '@/services'
 
 interface EnhancedFooterProps {
   className?: string

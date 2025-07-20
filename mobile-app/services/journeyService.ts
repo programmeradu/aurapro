@@ -36,23 +36,58 @@ class JourneyPlanningService {
       const cached = this.getFromCache(cacheKey)
       if (cached) return cached
 
+      // Prepare origin data
+      let originData: any
+      if (typeof request.origin === 'string') {
+        originData = { stop_id: request.origin, name: 'Origin Stop' }
+      } else if (request.origin && typeof request.origin === 'object') {
+        const lat = request.origin.latitude || (request.origin as any).lat || (request.origin as any).coords?.latitude
+        const lng = request.origin.longitude || (request.origin as any).lng || (request.origin as any).lon || (request.origin as any).coords?.longitude
+        
+        if (lat === undefined || lng === undefined) {
+          throw new Error(`Invalid origin coordinates: ${JSON.stringify(request.origin)}`)
+        }
+        
+        originData = {
+          name: (request.origin as any).name || 'Origin',
+          lat: lat,
+          lng: lng
+        }
+      } else {
+        throw new Error('Invalid origin data')
+      }
+
+      // Prepare destination data
+      let destinationData: any
+      if (typeof request.destination === 'string') {
+        destinationData = { stop_id: request.destination, name: 'Destination Stop' }
+      } else if (request.destination && typeof request.destination === 'object') {
+        const lat = request.destination.latitude || (request.destination as any).lat || (request.destination as any).coords?.latitude
+        const lng = request.destination.longitude || (request.destination as any).lng || (request.destination as any).lon || (request.destination as any).coords?.longitude
+        
+        if (lat === undefined || lng === undefined) {
+          throw new Error(`Invalid destination coordinates: ${JSON.stringify(request.destination)}`)
+        }
+        
+        destinationData = {
+          name: (request.destination as any).name || 'Destination',
+          lat: lat,
+          lng: lng
+        }
+      } else {
+        throw new Error('Invalid destination data')
+      }
+
       const response = await fetch(`${this.apiUrl}/api/v1/journey/plan`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          from: {
-            name: request.origin.name || 'Origin',
-            lat: request.origin.latitude,
-            lng: request.origin.longitude
-          },
-          to: {
-            name: request.destination.name || 'Destination',
-            lat: request.destination.latitude,
-            lng: request.destination.longitude
-          },
-          departure_time: request.departureTime || new Date().toISOString()
+          from: originData,
+          to: destinationData,
+          departure_time: request.departureTime || new Date().toISOString(),
+          preferences: request.preferences
         })
       })
 
@@ -76,7 +111,13 @@ class JourneyPlanningService {
       }
     } catch (error) {
       console.error('Error planning journey:', error)
-      throw error
+      
+      // Provide more helpful error messages
+      if (error instanceof Error) {
+        throw new Error(`Journey planning failed: ${error.message}`)
+      } else {
+        throw new Error(`Journey planning failed: ${JSON.stringify(error)}`)
+      }
     }
   }
 
@@ -91,18 +132,40 @@ class JourneyPlanningService {
     try {
       const queryParams = new URLSearchParams()
       
+      // Validate and handle origin
       if (typeof origin === 'string') {
         queryParams.append('origin_stop', origin)
+      } else if (origin && typeof origin === 'object') {
+        // Handle different possible structures
+        const lat = origin.latitude || origin.lat || (origin as any).coords?.latitude
+        const lng = origin.longitude || origin.lng || origin.lon || (origin as any).coords?.longitude
+        
+        if (lat === undefined || lng === undefined) {
+          throw new Error(`Invalid origin coordinates: lat=${lat}, lng=${lng}`)
+        }
+        
+        queryParams.append('origin_lat', lat.toString())
+        queryParams.append('origin_lng', lng.toString())
       } else {
-        queryParams.append('origin_lat', origin.latitude.toString())
-        queryParams.append('origin_lng', origin.longitude.toString())
+        throw new Error('Origin must be a string or GeoPoint object')
       }
       
+      // Validate and handle destination
       if (typeof destination === 'string') {
         queryParams.append('destination_stop', destination)
+      } else if (destination && typeof destination === 'object') {
+        // Handle different possible structures
+        const lat = destination.latitude || destination.lat || (destination as any).coords?.latitude
+        const lng = destination.longitude || destination.lng || destination.lon || (destination as any).coords?.longitude
+        
+        if (lat === undefined || lng === undefined) {
+          throw new Error(`Invalid destination coordinates: lat=${lat}, lng=${lng}`)
+        }
+        
+        queryParams.append('destination_lat', lat.toString())
+        queryParams.append('destination_lng', lng.toString())
       } else {
-        queryParams.append('destination_lat', destination.latitude.toString())
-        queryParams.append('destination_lng', destination.longitude.toString())
+        throw new Error('Destination must be a string or GeoPoint object')
       }
       
       if (vehicleTypes?.length) {

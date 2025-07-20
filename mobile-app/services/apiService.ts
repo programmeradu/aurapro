@@ -4,7 +4,7 @@
  * Apple/Uber-level data integration
  */
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8002';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8001';
 
 // API Response Types
 export interface ApiResponse<T> {
@@ -50,6 +50,119 @@ export interface VehiclePosition {
 }
 
 export interface JourneyPlan {
+  routes: JourneyRoute[];
+  total_time: number;
+  total_cost: number;
+  total_distance: number;
+}
+
+export interface JourneyRoute {
+  id: string;
+  mode: string;
+  duration: number;
+  cost: number;
+  distance: number;
+  steps: JourneyStep[];
+  departure_time: string;
+  arrival_time: string;
+  co2_emissions?: number;
+  comfort_score?: number;
+  reliability_score?: number;
+  provider?: string;
+  vehicle_type?: string;
+  eta_accuracy?: number;
+}
+
+export interface JourneyStep {
+  id: string;
+  type: string;
+  duration: number;
+  distance?: number;
+  instruction: string;
+  route_name?: string;
+  departure_stop?: string;
+  arrival_stop?: string;
+  line_color?: string;
+}
+
+export interface PopularDestination {
+  name: string;
+  category: string;
+  coordinates: Location;
+  estimated_travel_time: number;
+  popularity_score: number;
+}
+
+export interface MLPrediction {
+  predicted_time: number;
+  confidence: number;
+  factors: string[];
+  alternative_routes?: any[];
+}
+
+export interface TrafficData {
+  segment_id: string;
+  congestion_level: number;
+  average_speed: number;
+  travel_time: number;
+  incidents: any[];
+  timestamp: string;
+}
+
+export interface SystemMetrics {
+  active_vehicles: number;
+  total_journeys: number;
+  average_wait_time: number;
+  service_reliability: number;
+  system_uptime: number;
+}
+
+export interface LiveEvent {
+  id: string;
+  type: string;
+  title: string;
+  description: string;
+  location: Location;
+  severity: string;
+  timestamp: string;
+}
+
+export interface UberEstimate {
+  product_id: string;
+  display_name: string;
+  estimate: string;
+  surge_multiplier: number;
+  duration: number;
+  high_estimate: number;
+  low_estimate: number;
+  currency_code: string;
+}
+
+export interface GTFSRoute {
+  route_id: string;
+  route_short_name: string;
+  route_long_name: string;
+  route_type: number;
+  route_color?: string;
+}
+
+export interface GTFSAgency {
+  agency_id: string;
+  agency_name: string;
+  agency_url: string;
+  agency_timezone: string;
+}
+
+export interface AnalyticsEvent {
+  event_type: string;
+  user_id?: string;
+  session_id?: string;
+  timestamp: string;
+  properties: Record<string, any>;
+}
+
+// Legacy interface for backward compatibility
+export interface LegacyJourneyPlan {
   routes: Array<{
     duration: number;
     distance: number;
@@ -342,8 +455,21 @@ class APIService {
     });
   }
 
-  // Uber Integration Services
+  // Uber Integration Services - Updated to use new live API
   async getUberEstimate(request: {
+    start_latitude: number;
+    start_longitude: number;
+    end_latitude: number;
+    end_longitude: number;
+  }): Promise<ApiResponse<any>> {
+    return this.makeRequest<any>('/api/v1/uber/price_estimate', {
+      method: 'POST',
+      body: JSON.stringify(request),
+    });
+  }
+
+  // Legacy Uber endpoint for fallback
+  async getUberEstimateLegacy(request: {
     start_latitude: number;
     start_longitude: number;
     end_latitude: number;

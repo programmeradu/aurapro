@@ -15,6 +15,7 @@ import {
 import { mlService } from '@/services/mlService'
 import { budgetService } from '@/services/budgetService'
 import { journeyService } from '@/services/journeyService'
+import { apiService } from '@/services/apiService'
 import { GeoPoint } from '@/types/transport'
 
 interface SmartInsightsProps {
