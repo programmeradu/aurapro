@@ -51,12 +51,6 @@
       "static/chunks/main-app.js",
       "static/chunks/app/advanced-map/page.js"
     ],
-    "/journey/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/css/app/journey/page.css",
-      "static/chunks/app/journey/page.js"
-    ],
     "/map/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
@@ -66,6 +60,26 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/showcase/page.js"
+    ],
+    "/api/analytics/events/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/api/analytics/events/route.js"
+    ],
+    "/analytics/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/analytics/page.js"
+    ],
+    "/track/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/track/page.js"
+    ],
+    "/journey/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/journey/page.js"
     ]
   }
 }

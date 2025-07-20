@@ -8,6 +8,7 @@ import EnhancedQuickActions from '@/components/home/EnhancedQuickActions'
 import { UberLevelJourneyPlannerV2 } from '@/components/journey/UberLevelJourneyPlannerV2'
 import { EnhancedHeader } from '@/components/navigation/EnhancedHeader'
 import { EnhancedFooter } from '@/components/navigation/EnhancedFooter'
+import { GeminiAIAssistant } from '@/components/home/GeminiAIAssistant'
 import OfflineIndicator from '@/components/ui/OfflineIndicator'
 import { apiService } from '@/services/apiService'
 import {
@@ -255,6 +256,9 @@ export default function HomePage() {
 
       {/* Enhanced Footer */}
       <EnhancedFooter />
+
+      {/* Gemini AI Assistant */}
+      <GeminiAIAssistant userLocation={userLocation} />
     </div>
   )
 }

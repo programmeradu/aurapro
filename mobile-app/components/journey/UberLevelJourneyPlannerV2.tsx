@@ -259,17 +259,6 @@ export function UberLevelJourneyPlannerV2({
       setIsLoading(false)
     }
   }
-      const sortedOptions = sortJourneyOptions(allOptions, preferences.priority)
-      setJourneyOptions(sortedOptions)
-
-    } catch (error) {
-      console.error('Failed to plan journey:', error)
-      // Fallback to mock data
-      setJourneyOptions(getMockJourneyOptions())
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const updateRealTimeData = async () => {
     try {

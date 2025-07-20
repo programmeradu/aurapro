@@ -1,6 +1,8 @@
 {
+  "/analytics/page": "app/analytics/page.js",
+  "/advanced-map/page": "app/advanced-map/page.js",
+  "/journey/page": "app/journey/page.js",
   "/page": "app/page.js",
   "/showcase/page": "app/showcase/page.js",
-  "/advanced-map/page": "app/advanced-map/page.js",
-  "/journey/page": "app/journey/page.js"
+  "/track/page": "app/track/page.js"
 }
